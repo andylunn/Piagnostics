@@ -20,7 +20,7 @@ app.get('/getlogcontents', async (req, res) =>
           return;
         }
         
-        fs.readFile(req.params.filename, 'utf8', (err, data) =>
+        fs.readFile('/dev/shm/runcommand.log', 'utf8', (err, data) =>
         {
             if (err)
             {
