@@ -1,4 +1,5 @@
 let express = require('express');
+const fs = require('fs')
 
 let PORT = process.env.PORT || '5001';
 
@@ -7,18 +8,48 @@ let app = express();
 // Serve up public static files
 app.use(express.static('./'));
 
-// // Kick off a new job by adding it to the work queue
-// app.post('/job', async (req, res) =>
-// {
-//     let f =
-//     {
-//         DataBuffer: req.body.file
-//     };
+app.get('/getfilecontents/:filename', async (req, res) =>
+{
+    fs.stat(req.params.filename, (err, stats) =>
+    {
+        if (err)
+        {
+          console.error(err);
 
-//     upload = await cloud.UploadFile(f);
-//     let job = await workQueue.add(upload);
-//     res.json({ id: job.id });
-// });
+          res.status(500);
+          return;
+        }
+        
+        fs.readFile(req.params.filename, 'utf8', (err, data) =>
+        {
+            if (err)
+            {
+              console.error(err);
+
+              res.status(500);
+              return;
+            }
+
+            res.json({ contents: data });
+        });
+    });
+});
+
+app.get('/getfilestats/:filename', async (req, res) =>
+{
+    fs.stat(req.params.filename, (err, stats) =>
+    {
+        if (err)
+        {
+          console.error(err);
+
+          res.status(500);
+          return;
+        }
+
+        res.json({ stats: stats });
+    });
+});
 
 // // Allows the client to query the state of a background job
 // app.get('/job/:id', async (req, res) =>
