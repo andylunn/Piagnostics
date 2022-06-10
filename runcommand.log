@@ -1,6 +1,6 @@
 Parameters: 
 Executing: /opt/retropie/emulators/retroarch/bin/retroarch -L /opt/retropie/libretrocores/lr-mame2010/mame2010_libretro.so --config /opt/retropie/configs/mame-libretro/retroarch.cfg "/home/pi/RetroPie/roms/mame-libretro/hotrod.zip" --appendconfig /dev/shm/retroarch.cfg
 Average speed: 99.98% (87 seconds)
-
-rh
+wer
+r
 f 352435235

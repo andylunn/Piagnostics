@@ -18,16 +18,23 @@ var app = new Vue({
         {
             axios.get(`getfilestats/0`).then(r =>
             {
-                // Determine if the file has changed since last read
-                if (r.data.stats.mtimeMs != this.logLastModified)
+                if (r.data.status == 0)
                 {
-                    // If so then fetch its contents
-                    this.logLastModified = r.data.stats.mtimeMs;
-                    axios.get(`getfilecontents/0`).then(r =>
+                    // Determine if the file has changed since last read
+                    if (r.data.stats.mtimeMs != this.logLastModified)
                     {
-                        this.logContents = r.data.contents
-                    });
+                        // If so then fetch its contents
+                        this.logLastModified = r.data.stats.mtimeMs;
+                        axios.get(`getfilecontents/0`).then(r =>
+                        {
+                            this.logContents = r.data.contents
+                        });
+                    }
                 }
+            })
+            .catch(e =>
+            {
+
             });
         }
     }

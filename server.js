@@ -13,55 +13,45 @@ let fileList = ['/dev/shm/runcommand.log'];
 
 app.get('/getfilecontents/:id', async (req, res) =>
 {
-    fs.access(fileList[req.params.id], fs.constants.F_OK | fs.constants.R_OK, (err) =>
+    fs.readFile(fileList[req.params.id], 'utf8', (err, data) =>
     {
         if (err)
         {
-          console.error(err);
-
-          res.status(500);
-          return;
-        }
-        
-        fs.readFile(fileList[req.params.id], 'utf8', (err, data) =>
-        {
-            if (err)
+            if (err.code == 'ENOENT')
+                res.json({ status: -1});    // File not found
+            else
             {
-              console.error(err);
+                console.error(err);
 
-              res.status(500);
-              return;
+                res.status(500);
             }
 
-            res.json({ contents: data });
-        });
+            return;
+        }
+
+        res.json({ status: 0, contents: data });
     });
 });
 
 app.get('/getfilestats/:id', async (req, res) =>
 {
-    fs.access(fileList[req.params.id], fs.constants.F_OK | fs.constants.R_OK, (err) =>
+    fs.stat(fileList[req.params.id], (err, stats) =>
     {
         if (err)
         {
-            console.error(err);
-
-            res.status(500);
-            return;
-        }
-
-        fs.stat(fileList[req.params.id], (err, stats) =>
-        {
-            if (err)
+            if (err.code == 'ENOENT')
+                res.json({ status: -1});    // File not found
+            else
             {
                 console.error(err);
 
                 res.status(500);
-                return;
             }
 
-            res.json({ stats: stats });
-        });
+            return;
+        }
+
+        res.json({ status: 0, stats: stats });
     });
 });
 
