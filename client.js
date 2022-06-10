@@ -2,7 +2,7 @@ var app = new Vue({
 	el: '#app',
 	data:
 	{
-        logPath: 'runcommand.log',
+        logPath: '/dev/shm/runcommand.log',
 		logContents: '',
         logLastModified: 0
 	},
