@@ -8,9 +8,12 @@ let app = express();
 // Serve up public static files
 app.use(express.static('./'));
 
-app.get('/getlogcontents', async (req, res) =>
+let fileList = ['/dev/shm/runcommand.log'];
+//let fileList = ['runcommand.log'];
+
+app.get('/getfilecontents/:id', async (req, res) =>
 {
-    fs.stat('/dev/shm/runcommand.log', (err, stats) =>
+    fs.access(fileList[req.params.id], fs.constants.F_OK | fs.constants.R_OK, (err) =>
     {
         if (err)
         {
@@ -20,7 +23,7 @@ app.get('/getlogcontents', async (req, res) =>
           return;
         }
         
-        fs.readFile('/dev/shm/runcommand.log', 'utf8', (err, data) =>
+        fs.readFile(fileList[req.params.id], 'utf8', (err, data) =>
         {
             if (err)
             {
@@ -35,19 +38,30 @@ app.get('/getlogcontents', async (req, res) =>
     });
 });
 
-app.get('/getlogstats', async (req, res) =>
+app.get('/getfilestats/:id', async (req, res) =>
 {
-    fs.stat('/dev/shm/runcommand.log', (err, stats) =>
+    fs.access(fileList[req.params.id], fs.constants.F_OK | fs.constants.R_OK, (err) =>
     {
         if (err)
         {
-          console.error(err);
+            console.error(err);
 
-          res.status(500);
-          return;
+            res.status(500);
+            return;
         }
 
-        res.json({ stats: stats });
+        fs.stat(fileList[req.params.id], (err, stats) =>
+        {
+            if (err)
+            {
+                console.error(err);
+
+                res.status(500);
+                return;
+            }
+
+            res.json({ stats: stats });
+        });
     });
 });
 
