@@ -8,9 +8,9 @@ let app = express();
 // Serve up public static files
 app.use(express.static('./'));
 
-app.get('/getfilecontents/:filename', async (req, res) =>
+app.get('/getlogcontents', async (req, res) =>
 {
-    fs.stat(req.params.filename, (err, stats) =>
+    fs.stat('/dev/shm/runcommand.log', (err, stats) =>
     {
         if (err)
         {
@@ -35,9 +35,9 @@ app.get('/getfilecontents/:filename', async (req, res) =>
     });
 });
 
-app.get('/getfilestats/:filename', async (req, res) =>
+app.get('/getlogstats', async (req, res) =>
 {
-    fs.stat(req.params.filename, (err, stats) =>
+    fs.stat('/dev/shm/runcommand.log', (err, stats) =>
     {
         if (err)
         {
