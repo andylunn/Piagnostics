@@ -3,17 +3,23 @@ var app = new Vue({
 	data:
 	{
 		logContents: '',
-        logLastModified: 0
+        logLastModified: 0,
+        joystickSnapshot: null
 	},
 	mounted ()
 	{
-        setInterval(() =>
-        {
-            this.getLogFile();
-        }, 2000);
+        setInterval(() => { this.getLogFile(); }, 2000);
+        setInterval(() => { this.getJoystickSnapshot(); }, 100);
     },
     methods:
     {
+        getJoystickSnapshot: function()
+        {
+            axios.get(`getjoysticks`).then(r =>
+            {
+                this.joystickSnapshot = r.data.contents[0].Snapshot.data;
+            });
+        },
         getLogFile: function()
         {
             axios.get(`getfilestats/0`).then(r =>
