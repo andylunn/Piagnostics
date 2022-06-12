@@ -3,7 +3,7 @@ const fs = require('fs')
 let HID = require('node-hid');
 
 var attachedDevs = [];
-let devs = HID.devices().filter(d => d.usage == 5 && !(d.productId == 4639 && d.vendorId == 1102));
+let devs = HID.devices();//.filter(d => d.usage == 5 && !(d.productId == 4639 && d.vendorId == 1102));
 
 console.log(devs);
 
