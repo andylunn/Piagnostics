@@ -1,25 +1,38 @@
 let express = require('express');
 const fs = require('fs')
 let HID = require('node-hid');
+const { exec } = require("child_process");
 
 var attachedDevs = [];
 let devs = HID.devices();//.filter(d => d.usage == 5 && !(d.productId == 4639 && d.vendorId == 1102));
 
-console.log(devs);
+// console.log(devs);
 
-for (const d of devs)
-{
-    let newDev = new Object();
-    newDev.HID = new HID.HID(d.vendorId, d.productId);
-    newDev.HID.on('data', function(data)
-    {
-        newDev.Snapshot = data;
-    });
+// for (const d of devs)
+// {
+//     let newDev = new Object();
+//     newDev.HID = new HID.HID(d.vendorId, d.productId);
+//     newDev.HID.on('data', function(data)
+//     {
+//         newDev.Snapshot = data;
+//     });
 
-    attachedDevs.push(newDev);
-}
+//     attachedDevs.push(newDev);
+// }
 
-console.log(attachedDevs);
+// console.log(attachedDevs);
+
+// exec("dir", (error, stdout, stderr) => {
+//     if (error) {
+//         console.log(`error: ${error.message}`);
+//         return;
+//     }
+//     if (stderr) {
+//         console.log(`stderr: ${stderr}`);
+//         return;
+//     }
+//     console.log(`stdout: ${stdout}`);
+// });
 
 let PORT = process.env.PORT || '5001';
 
