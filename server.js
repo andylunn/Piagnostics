@@ -41,8 +41,8 @@ let app = express();
 // Serve up public static files
 app.use(express.static('./'));
 
-//let fileList = ['/dev/shm/runcommand.log'];
-let fileList = ['runcommand.log'];
+let fileList = ['/dev/shm/runcommand.log'];
+//let fileList = ['runcommand.log'];
 
 app.get('/getjoysticks', async (req, res) =>
 {
